@@ -26,4 +26,5 @@ const filterSlice = createSlice({
     }
 })
 
+export const {toggle, brandToggle} = filterSlice.actions
 export default filterSlice.reducer
