@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../../components/ProductCard";
 import { brandToggle, toggle } from "../../features/filter/filterSlice";
+import { getProducts } from "../../features/product/productsAPI";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
   const { stock, brands } = useSelector(state => state.filter)
+  const { products, isLoading } = useSelector(state => state.product)
   const dispatch = useDispatch()
 
+  console.log(products)
+
   useEffect(() => {
-    fetch("products.json")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, []);
+    dispatch(getProducts())
+  }, [dispatch]);
 
   const activeClass = "text-white  bg-indigo-500 border-white";
 
   let content;
+
+  if(isLoading) content = <h3>Loading...</h3>
 
   if (products?.length && (stock || brands?.length || true)) {
     content = products.filter(product => {
