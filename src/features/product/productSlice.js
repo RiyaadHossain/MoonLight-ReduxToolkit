@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addProductAPI, fetchProductsAPI, removeProductAPI } from "./productsAPI";
+import { addProductAPI, fetchProductsAPI, removeProductAPI, updateProductAPI } from "./productsAPI";
 
 const initialState = {
     products: [],
@@ -20,6 +20,12 @@ export const getProducts = createAsyncThunk("product/getProducts", () => {
 // Add Product
 export const addProduct = createAsyncThunk("product/addProduct", async (product, thunkAPI) => {
     await addProductAPI(product)
+    thunkAPI.dispatch(getProducts())
+})
+
+// Add Product
+export const updateProduct = createAsyncThunk("product/updateProduct", async ({id, product}, thunkAPI) => {
+    await updateProductAPI({id, product})
     thunkAPI.dispatch(getProducts())
 })
 
@@ -48,7 +54,6 @@ const productSlice = createSlice({
             state.isFetching = true
             state.error = false
         }).addCase(getProducts.fulfilled, (state, action) => {
-            console.log(action.payload);
             state.products = action.payload
             state.isFetching = false
         }).addCase(getProducts.rejected, (state, action) => {
@@ -73,6 +78,15 @@ const productSlice = createSlice({
             state.isDeleteSuccessful = true
             state.isLoading = false
         }).addCase(removeProduct.rejected, (state, action) => {
+            state.isError = true
+            state.error = action.error.message
+        }).addCase(updateProduct.pending, (state, action) => {
+            state.isLoading = true
+            state.error = false
+        }).addCase(updateProduct.fulfilled, (state, action) => {
+            state.isDeleteSuccessful = true
+            state.isLoading = false
+        }).addCase(updateProduct.rejected, (state, action) => {
             state.isError = true
             state.error = action.error.message
         })

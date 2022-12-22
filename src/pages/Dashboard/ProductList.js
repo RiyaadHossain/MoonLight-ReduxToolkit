@@ -8,8 +8,6 @@ const ProductList = () => {
   const dispatch = useDispatch()
   const { products, isLoading, isError, isDeleteSuccessful } = useSelector(state => state.product)
 
-  console.log(isLoading)
-
   useEffect(() => {
     if (isLoading && !isDeleteSuccessful) toast.loading("Processing...", { id: 'Post123' });
     if (!isLoading && isDeleteSuccessful) {

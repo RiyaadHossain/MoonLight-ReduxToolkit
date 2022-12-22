@@ -28,8 +28,6 @@ const AddProduct = () => {
     reset()
   };
 
-  console.log(isLoading, isPostSuccessful)
-
   useEffect(() => {
 
     if (isLoading && !isPostSuccessful) toast.loading("Processing...", { id: 'Post123' })
@@ -40,7 +38,7 @@ const AddProduct = () => {
     }
 
     if (isError) toast.error("Something went Wrong", { id: 'Post123' })
-    
+
   }, [isLoading, isPostSuccessful, isError, dispatch])
 
 

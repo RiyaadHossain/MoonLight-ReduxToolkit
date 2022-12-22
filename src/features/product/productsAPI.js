@@ -11,6 +11,11 @@ export const addProductAPI = async (product) => {
     await axios.post("/product", product)
 }
 
+// Add Product
+export const updateProductAPI = async ({id, product}) => {
+    await axios.patch(`/product/${id}`, product)
+}
+
 // Remove Product
 export const removeProductAPI = async (id) => {
     await axios.delete(`/product/${id}`)
