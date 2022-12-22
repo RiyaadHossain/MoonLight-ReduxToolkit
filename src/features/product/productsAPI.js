@@ -1,9 +1,6 @@
-import { createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "../../api/axios.config"
 
-const URL = "https://moon-light-server.vercel.app"
-
-export const getProducts = createAsyncThunk("product/getProducts", async () => {
-    const res = await fetch(`${URL}/products`)
-    const {data} = await res.json()
-    return data
-})
+export const fetchProducts = async () => {
+    const { data } = await axios.get("/products")
+    return data.data
+}
