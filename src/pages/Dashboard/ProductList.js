@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeProduct } from "../../features/product/productSlice";
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    fetch("products.json")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  });
+  const dispatch = useDispatch()
+  const { products, isLoading } = useSelector(state => state.product)
+
+  if(isLoading) return <h3>Loading...</h3>
 
   return (
     <div class='flex flex-col justify-center items-center h-full w-full '>
@@ -41,7 +41,7 @@ const ProductList = () => {
 
             <tbody class='text-sm divide-y divide-gray-100'>
               {products.map(({ model, brand, price, status, _id }) => (
-                <tr>
+                <tr key={_id}>
                   <td class='p-2'>
                     <input type='checkbox' class='w-5 h-5' value='id-1' />
                   </td>
@@ -67,7 +67,7 @@ const ProductList = () => {
                   </td>
                   <td class='p-2'>
                     <div class='flex justify-center'>
-                      <button>
+                      <button onClick={() => dispatch(removeProduct(_id))}>
                         <svg
                           class='w-8 h-8 hover:text-blue-600 rounded-full hover:bg-gray-100 p-1'
                           fill='none'

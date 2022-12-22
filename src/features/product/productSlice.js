@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchProducts } from "./productsAPI";
+import { addProductAPI, fetchProductsAPI, removeProductAPI } from "./productsAPI";
 
 const initialState = {
     products: [],
@@ -8,15 +8,32 @@ const initialState = {
     error: ""
 }
 
-
-export const getProducts = createAsyncThunk("product/getProducts", async () => {
-    const data = fetchProducts()
+// Get Products
+export const getProducts = createAsyncThunk("product/getProducts", () => {
+    const data = fetchProductsAPI()
     return data
+})
+
+// Add Product
+export const addProduct = createAsyncThunk("product/addProduct", async (product, thunkAPI) => {
+    await addProductAPI(product)
+    thunkAPI.dispatch(getProducts())
+})
+
+// Remove Product
+export const removeProduct = createAsyncThunk("product/removeProduct", (id, thunkAPI) => {
+    removeProductAPI(id)
+    thunkAPI.dispatch(removeProductReducer(id))
 })
 
 const productSlice = createSlice({
     name: "product",
     initialState,
+    reducers: {
+        removeProductReducer: (state, action) => {
+            state.products = state.products.filter(product => product._id !== action.payload)
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(getProducts.pending, (state, action) => {
             state.isLoading = true
@@ -33,5 +50,5 @@ const productSlice = createSlice({
     },
 })
 
-// export const { getProducts, addProduct, updateProduct, deleteProduct } = productSlice.actions
+export const { removeProductReducer } = productSlice.actions
 export default productSlice.reducer
