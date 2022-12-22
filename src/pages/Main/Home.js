@@ -5,14 +5,14 @@ import { brandToggle, toggle } from "../../features/filter/filterSlice";
 
 const Home = () => {
   const { stock, brands } = useSelector(state => state.filter)
-  const { products, isLoading } = useSelector(state => state.product)
+  const { products, isFetching } = useSelector(state => state.product)
   const dispatch = useDispatch()
 
   const activeClass = "text-white  bg-indigo-500 border-white";
 
   let content;
 
-  if(isLoading) content = <h3>Loading...</h3>
+  if(isFetching) content = <h3>Loading...</h3>
 
   if (products?.length && (stock || brands?.length || true)) {
     content = products.filter(product => {

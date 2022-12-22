@@ -3,8 +3,11 @@ import { addProductAPI, fetchProductsAPI, removeProductAPI } from "./productsAPI
 
 const initialState = {
     products: [],
+    isFetching: false,
     isLoading: false,
     isError: false,
+    isPostSuccessful: false,
+    isDeleteSuccessful: false,
     error: ""
 }
 
@@ -32,23 +35,49 @@ const productSlice = createSlice({
     reducers: {
         removeProductReducer: (state, action) => {
             state.products = state.products.filter(product => product._id !== action.payload)
-        }
+        },
+        togglePostSuccessful: (state, action) => {
+            state.isPostSuccessful = false
+        },
+        toggleDeleteSuccessful: (state, action) => {
+            state.isDeleteSuccessful = false
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(getProducts.pending, (state, action) => {
-            state.isLoading = true
+            state.isFetching = true
             state.error = false
         }).addCase(getProducts.fulfilled, (state, action) => {
             console.log(action.payload);
             state.products = action.payload
-            state.isLoading = false
+            state.isFetching = false
         }).addCase(getProducts.rejected, (state, action) => {
             state.products = []
+            state.isError = true
+            state.isFetching = false
+            state.error = action.error.message
+        }).addCase(addProduct.pending, (state, action) => {
+            state.isLoading = true
+            state.error = false
+        }).addCase(addProduct.fulfilled, (state, action) => {
+            state.isPostSuccessful = true
+            state.isLoading = false
+        }).addCase(addProduct.rejected, (state, action) => {
+            state.isError = true
+            state.isLoading = false
+            state.error = action.error.message
+        }).addCase(removeProduct.pending, (state, action) => {
+            state.isLoading = true
+            state.error = false
+        }).addCase(removeProduct.fulfilled, (state, action) => {
+            state.isDeleteSuccessful = true
+            state.isLoading = false
+        }).addCase(removeProduct.rejected, (state, action) => {
             state.isError = true
             state.error = action.error.message
         })
     },
 })
 
-export const { removeProductReducer } = productSlice.actions
+export const { removeProductReducer, togglePostSuccessful, toggleDeleteSuccessful } = productSlice.actions
 export default productSlice.reducer

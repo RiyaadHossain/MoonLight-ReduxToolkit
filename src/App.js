@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import { getProducts } from "./features/product/productSlice";
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <div>
+      <Toaster/>
       <RouterProvider router={routes} />
     </div>
   );
