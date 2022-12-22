@@ -23,9 +23,9 @@ export const addProduct = createAsyncThunk("product/addProduct", async (product,
     thunkAPI.dispatch(getProducts())
 })
 
-// Add Product
-export const updateProduct = createAsyncThunk("product/updateProduct", async ({id, product}, thunkAPI) => {
-    await updateProductAPI({id, product})
+// Update Product
+export const updateProduct = createAsyncThunk("product/updateProduct", async ({ id, product }, thunkAPI) => {
+    await updateProductAPI({ id, product })
     thunkAPI.dispatch(getProducts())
 })
 
@@ -50,46 +50,58 @@ const productSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(getProducts.pending, (state, action) => {
-            state.isFetching = true
-            state.error = false
-        }).addCase(getProducts.fulfilled, (state, action) => {
-            state.products = action.payload
-            state.isFetching = false
-        }).addCase(getProducts.rejected, (state, action) => {
-            state.products = []
-            state.isError = true
-            state.isFetching = false
-            state.error = action.error.message
-        }).addCase(addProduct.pending, (state, action) => {
-            state.isLoading = true
-            state.error = false
-        }).addCase(addProduct.fulfilled, (state, action) => {
-            state.isPostSuccessful = true
-            state.isLoading = false
-        }).addCase(addProduct.rejected, (state, action) => {
-            state.isError = true
-            state.isLoading = false
-            state.error = action.error.message
-        }).addCase(removeProduct.pending, (state, action) => {
-            state.isLoading = true
-            state.error = false
-        }).addCase(removeProduct.fulfilled, (state, action) => {
-            state.isDeleteSuccessful = true
-            state.isLoading = false
-        }).addCase(removeProduct.rejected, (state, action) => {
-            state.isError = true
-            state.error = action.error.message
-        }).addCase(updateProduct.pending, (state, action) => {
-            state.isLoading = true
-            state.error = false
-        }).addCase(updateProduct.fulfilled, (state, action) => {
-            state.isDeleteSuccessful = true
-            state.isLoading = false
-        }).addCase(updateProduct.rejected, (state, action) => {
-            state.isError = true
-            state.error = action.error.message
-        })
+        builder
+
+            // Get Products_____________________
+            .addCase(getProducts.pending, (state, action) => {
+                state.isFetching = true
+                state.error = false
+            }).addCase(getProducts.fulfilled, (state, action) => {
+                state.products = action.payload
+                state.isFetching = false
+            }).addCase(getProducts.rejected, (state, action) => {
+                state.products = []
+                state.isError = true
+                state.isFetching = false
+                state.error = action.error.message
+            })
+
+            // Add Product_____________________
+            .addCase(addProduct.pending, (state, action) => {
+                state.isLoading = true
+                state.error = false
+            }).addCase(addProduct.fulfilled, (state, action) => {
+                state.isPostSuccessful = true
+                state.isLoading = false
+            }).addCase(addProduct.rejected, (state, action) => {
+                state.isError = true
+                state.isLoading = false
+                state.error = action.error.message
+            })
+            
+            // Delete Product_____________________
+            .addCase(removeProduct.pending, (state, action) => {
+                state.isLoading = true
+                state.error = false
+            }).addCase(removeProduct.fulfilled, (state, action) => {
+                state.isDeleteSuccessful = true
+                state.isLoading = false
+            }).addCase(removeProduct.rejected, (state, action) => {
+                state.isError = true
+                state.error = action.error.message
+            })
+            
+            // Update Product_____________________
+            .addCase(updateProduct.pending, (state, action) => {
+                state.isLoading = true
+                state.error = false
+            }).addCase(updateProduct.fulfilled, (state, action) => {
+                state.isDeleteSuccessful = true
+                state.isLoading = false
+            }).addCase(updateProduct.rejected, (state, action) => {
+                state.isError = true
+                state.error = action.error.message
+            })
     },
 })
 

@@ -7,7 +7,7 @@ import { addProduct, togglePostSuccessful } from "../../features/product/product
 const AddProduct = () => {
   const dispatch = useDispatch()
   const { register, handleSubmit, reset } = useForm();
-  const { isLoading, isError, isPostSuccessful } = useSelector(state => state.product)
+  const { isLoading, isError, isPostSuccessful, error } = useSelector(state => state.product)
 
   const submit = (data) => {
     const product = {
@@ -30,16 +30,16 @@ const AddProduct = () => {
 
   useEffect(() => {
 
-    if (isLoading && !isPostSuccessful) toast.loading("Processing...", { id: 'Post123' })
+    if (isLoading) toast.loading("Processing...", { id: 'Post123' })
 
     if (!isLoading && isPostSuccessful) {
       toast.success("Product added successfully", { id: 'Post123' })
       dispatch(togglePostSuccessful())
     }
 
-    if (isError) toast.error("Something went Wrong", { id: 'Post123' })
+    if (isError) toast.error(error, { id: 'Post123' })
 
-  }, [isLoading, isPostSuccessful, isError, dispatch])
+  }, [isLoading, isPostSuccessful, isError, error, dispatch])
 
 
   return (

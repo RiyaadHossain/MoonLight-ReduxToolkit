@@ -6,16 +6,20 @@ import { removeProduct, toggleDeleteSuccessful } from "../../features/product/pr
 const ProductList = () => {
 
   const dispatch = useDispatch()
-  const { products, isLoading, isError, isDeleteSuccessful } = useSelector(state => state.product)
+  const { products, isLoading, isError, error, isDeleteSuccessful } = useSelector(state => state.product)
 
   useEffect(() => {
-    if (isLoading && !isDeleteSuccessful) toast.loading("Processing...", { id: 'Post123' });
+
+    if (isLoading) toast.loading("Processing...", { id: 'Post123' });
+
     if (!isLoading && isDeleteSuccessful) {
       toast.success("Product deleted successfully", { id: 'Post123' })
       dispatch(toggleDeleteSuccessful())
     }
-    if (isError) { toast.error("Something went Wrong", { id: 'Post123' }) }
-  }, [isLoading, isDeleteSuccessful, isError, dispatch])
+
+    if (isError) { toast.error(error, { id: 'Post123' }) }
+
+  }, [isLoading, isDeleteSuccessful, isError, error, dispatch])
 
 
   if (isLoading) return <h3>Loading...</h3>

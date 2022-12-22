@@ -11,7 +11,7 @@ export const addProductAPI = async (product) => {
     await axios.post("/product", product)
 }
 
-// Add Product
+// Update Product
 export const updateProductAPI = async ({id, product}) => {
     await axios.patch(`/product/${id}`, product)
 }
